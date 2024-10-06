@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
+    <script type="module" src="scripts.js"></script>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h1 class="mt-5">Calculator</h1>
+        <form>
+            <div class="form-group">
+            <label for="balance">Balance</label>
+            <input type="number" class="form-control" id="balance" v-model="balance" step="0.01" min="0" max="10000" required :class="{'is-invalid': balance > 10000 || balance < 1000}">
+            <input type="range" class="form-control-range" id="balanceSlider" v-model="balance" :min="config.MinInitBal" :max="Math.min(config.MaxInitBal, 10000)" :step="500">
+            <small class="form-text text-muted">Enter a balance between {{ config.MinInitBal }} and {{ Math.min(config.MaxInitBal, 10000) }} to compare our loan with their loan.</small>
+            <div v-if="balance > 10000 || balance < 1000" class="invalid-feedback">
+                Balance must be between 1000 and 10000.
+            </div>
+            </div>
+
+            <div class="form-group">
+                <label for="periodsPerYear">Periods per year</label>
+                <select class="form-control" id="periodsPerYear" v-model="periodsPerYear" required>
+                    <option value="12">12 - Monthly</option>
+                    <option value="24">24 - Semi-Monthly</option>
+                    <option value="26">26 - Bi-weekly</option>
+                    <option value="52">52 - Weekly</option>
+                </select>
+                <small class="form-text text-muted">This is the number of payments you wish to make per year.</small>
+                </div>
+
+            <h2 class="mt-5">Their Loan Parameters</h2>
+            <p>Let's assume that you are making monthly payments with a fixed payment on your existing loan.</p>
+
+            <!-- <div class="form-group">
+            <label for="term">Term</label>
+            <input type="number" class="form-control" id="term" v-model="term" min="1" required>
+            <input type="range" class="form-control-range" id="termSlider" v-model="term" :min="3" :max="60" :step="3">
+            <small class="form-text text-muted">Enter a term as an integer greater than zero.</small>
+            </div>
+ -->
+            <div class="form-group">
+                <label for="apr">APR</label>
+                <input type="number" class="form-control" id="apr" v-model="apr" step="0.01" min="0" max="1000" required :class="{'is-invalid': apr > 1000 || apr < 0}">
+                <input type="range" class="form-control-range" id="aprSlider" v-model="apr" :min="0" :max="1000" :step="50">
+                <small class="form-text text-muted">Enter your loan's annual rate as a percentage, e.g., "123" for 123%.</small>
+                <div v-if="apr > 1000 || apr < 0" class="invalid-feedback">
+                    APR must be between 0 and 1000.
+                </div>
+            </div>
+
+            <div class="form-group">
+            <label for="pmt">Pmt</label>
+            <input type="number" class="form-control" id="pmt" v-model="pmt" step="0.01" min="0.01" required :class="{'is-invalid': pmt > 1000 || pmt < 50}">
+            <input type="range" class="form-control-range" id="pmtSlider" v-model="pmt" :min="50" :max="1000" :step="50">
+            <small class="form-text text-muted">Enter your fixed monthly payment in dollars.</small>
+            <div v-if="pmt > 1000 || pmt < 50" class="invalid-feedback">
+                Payment must be between 50 and 1000.
+            </div>
+            </div>
+        </form>
+        <!-- <button type="button" class="btn btn-primary mt-3" @click="calc">Calculate</button> -->
+
+        <h2 class="mt-5">Comparison Results</h2>
+        <div id="error" class="error"></div>
+        <pre id="out"></pre>
+    </div>
+</body>
+
+</html>
