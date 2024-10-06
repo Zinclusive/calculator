@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label for="apr">APR</label>
                 <input type="number" class="form-control" id="apr" v-model="apr" step="0.01" min="0" max="1000" required :class="{'is-invalid': apr > 1000 || apr < 0}">
-                <input type="range" class="form-control-range" id="aprSlider" v-model="apr" :min="0" :max="1000" :step="50">
+                <input type="range" class="form-control-range" id="aprSlider" v-model="apr" :min="0" :max="1000" :step="10">
                 <small class="form-text text-muted">Enter your loan's annual rate as a percentage, e.g., "123" for 123%.</small>
                 <div v-if="apr > 1000 || apr < 0" class="invalid-feedback">
                     APR must be between 0 and 1000.
@@ -60,7 +60,7 @@
             <div class="form-group">
             <label for="pmt">Pmt</label>
             <input type="number" class="form-control" id="pmt" v-model="pmt" step="0.01" min="0.01" required :class="{'is-invalid': pmt > 1000 || pmt < 50}">
-            <input type="range" class="form-control-range" id="pmtSlider" v-model="pmt" :min="50" :max="1000" :step="50">
+            <input type="range" class="form-control-range" id="pmtSlider" v-model="pmt" :min="50" :max="1000" :step="10">
             <small class="form-text text-muted">Enter your fixed monthly payment in dollars.</small>
             <div v-if="pmt > 1000 || pmt < 50" class="invalid-feedback">
                 Payment must be between 50 and 1000.
