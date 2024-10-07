@@ -57,9 +57,11 @@ function _calc(THIS) {
             error('');
         }
 
+        let savings = themResults.totalInterest - usResults.totalInterest;
+        THIS.savings = savings.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
         out(`Our   Total Interest:   ${usResults.totalInterest.toFixed(2).padStart(10, ' ')}  Term: ${usResults.term}`);
         out(`Their Total Interest:   ${themResults.totalInterest.toFixed(2).padStart(10, ' ')}  Term: ${themResults.term}`);
-        out(`Total Interest Savings: ${(themResults.totalInterest - usResults.totalInterest).toFixed(2).padStart(10, ' ')}`);
+        out(`Total Interest Savings: ${savings.toFixed(2).padStart(10, ' ')}`);
 
         report(usResults, `Our Schedule\n\nBand: ${band}`);
         report(themResults, 'Their Schedule');
@@ -94,6 +96,7 @@ createApp({
             pmt: pmt,
             config: config,
             start: start,
+            savings: 0,
             timeout: null
         };
     },
