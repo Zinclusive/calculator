@@ -210,4 +210,4 @@ class PaydownThem {
     }
 }
 
-export { PaydownUs, PaydownThem };
+export { PaydownUs, PaydownThem, calculatePayment };

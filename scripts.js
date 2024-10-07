@@ -1,5 +1,5 @@
 import config from './config.js';
-import { PaydownUs, PaydownThem } from './engine.js';
+import { PaydownUs, PaydownThem, calculatePayment } from './engine.js';
 
 function clear() {
     document.getElementById("out").innerText = "";
@@ -111,6 +111,9 @@ createApp({
         this.calc(this);
     },
     methods: {
+        setTerm(term) {
+            this.pmt = calculatePayment(this.balance, this.apr/1200, term).toFixed(2);
+        },
         calc() {
             _calc(this);
         },

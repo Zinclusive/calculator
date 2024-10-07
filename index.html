@@ -69,7 +69,16 @@
             <label for="pmt">Pmt</label>
             <input type="number" class="form-control" id="pmt" v-model="pmt" step="0.01" min="0.01" required :class="{'is-invalid': pmt > 10000 || pmt < 50}">
             <input type="range" class="form-control-range" id="pmtSlider" v-model="pmt" :min="50" :max="10000" :step="10">
-            <small class="form-text text-muted">Enter your fixed monthly payment in dollars.</small>
+            <small class="form-text text-muted">Enter your fixed monthly payment in dollars, or choose a term below to calculate the value.</small>
+            Term:
+            <span @click="setTerm(12)" class="term">12</span> |
+            <span @click="setTerm(18)" class="term">18</span> |
+            <span @click="setTerm(24)" class="term">24</span> |
+            <span @click="setTerm(30)" class="term">30</span> |
+            <span @click="setTerm(36)" class="term">36</span> |
+            <span @click="setTerm(48)" class="term">48</span> |
+            <span @click="setTerm(60)" class="term">60</span>
+
             <div v-if="pmt > 1000 || pmt < 50" class="invalid-feedback">
                 Payment must be between 50 and 1000.
             </div>

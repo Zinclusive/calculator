@@ -16,3 +16,9 @@ label {
     font-weight: bold;
     font-size: 2em;
 }
+
+.term {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+}
