@@ -59,8 +59,8 @@ function _calc(THIS) {
 
         let savings = themResults.totalInterest - usResults.totalInterest;
         THIS.savings = savings.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-        out(`Our   Total Interest:   ${usResults.totalInterest.toFixed(2).padStart(10, ' ')}  Term: ${usResults.term}`);
-        out(`Their Total Interest:   ${themResults.totalInterest.toFixed(2).padStart(10, ' ')}  Term: ${themResults.term}`);
+        out(`Our   Total Interest:   ${usResults.totalInterest.toFixed(2).padStart(10, ' ')}      Term: ${usResults.term.toFixed(0).padStart(3, ' ')}      Max Payment: ${usResults.maxPmt.toFixed(2).padStart(10, ' ')}`);
+        out(`Their Total Interest:   ${themResults.totalInterest.toFixed(2).padStart(10, ' ')}      Term: ${themResults.term.toFixed(0).padStart(3, ' ')}      Max Payment: ${themResults.maxPmt.toFixed(2).padStart(10, ' ')}`);
         out(`Total Interest Savings: ${savings.toFixed(2).padStart(10, ' ')}`);
 
         report(usResults, `Our Schedule\n\nBand: ${band}`);

@@ -37,6 +37,7 @@ class PaydownUs {
         let ld = new Date(d);
         let b = balance;
         let totalInterest = 0;
+        let maxPmt = 0;
 
         for (var i = 0; i < 1000; i++) {
             if (i > 200) {
@@ -76,6 +77,7 @@ class PaydownUs {
                 const MinPmtPrin = b * (MinPmtPctPrin / 100) * 12 / periods_per_year;
                 const bi = b + Int;
                 const pmt = Math.min(bi, Math.max(MinPmtPrin + Int, MinPmtFloor));
+                maxPmt = Math.max(maxPmt, pmt);
 
                 b = bi - pmt;
                 if (i < 10) {
@@ -107,7 +109,8 @@ class PaydownUs {
             'error': null,
             'totalInterest': totalInterest,
             "term": i,
-            'schedule': schedule
+            'schedule': schedule,
+            'maxPmt': maxPmt
         }
     }
 }
@@ -137,6 +140,7 @@ class PaydownThem {
         let ld = new Date(d);
         let b = balance;
         let totalInterest = 0;
+        let maxPmt = 0;
 
         for (var i = 0; i < 1000; i++) {
             if (i > 200) {
@@ -169,6 +173,8 @@ class PaydownThem {
                 const interestPayment = b * (this.apr / 12 / 100);
                 const principalPayment = Math.min(b, pmt - interestPayment);
                 pmt = principalPayment + interestPayment;
+                maxPmt = Math.max(maxPmt, pmt);
+
                 b -= principalPayment;
                 totalInterest += interestPayment;
                     schedule.push({
@@ -196,7 +202,8 @@ class PaydownThem {
             'error': null,
             'totalInterest': totalInterest,
             'term': i,
-            'schedule': schedule
+            'schedule': schedule,
+            'maxPmt': maxPmt
         }
 
         return schedule;
