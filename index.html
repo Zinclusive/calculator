@@ -15,6 +15,15 @@
 <body>
     <div id="app" class="container">
         <h1 class="mt-5">Calculator</h1>
+        Scenarios:
+        <a :href="'/?balance=' + balance + '&ppy=' + periodsPerYear + '&start=2000-01-01&pmt=' + pmt + '&apr=' + apr" title="Save the parameters in the URL.">SAVE</a> |
+        <a href="/?balance=1000&ppy=26&start=2000-01-01&pmt=85&apr=100">$3K</a> |
+        <a href="/?balance=3000&ppy=26&start=2000-01-01&pmt=276&apr=100">$4K</a> |
+        <a href="/?balance=3000&ppy=26&start=2000-01-01&pmt=528&apr=200">$6K</a> |
+        <a href="?balance=5000&ppy=26&start=2000-01-01&pmt=900&apr=200">$8K</a> |
+        <a href="/?balance=5000&ppy=24&start=2000-01-01&apr=200&pmt=850">$14K</a> |
+        <a href="/?balance=10000&ppy=24&start=3000-01-01&pmt=8333.34&apr=1000" title="Worst-case.">$177K</a>
+        <p></p>
         <form>
             <div class="form-group">
             <label for="balance">Balance</label>
