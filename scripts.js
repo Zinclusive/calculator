@@ -29,7 +29,7 @@ function report(results, title) {
     out("======  ==========  ==========  ==========  ==========  ==========  ======");
     for (let i = 0; i < rows.length; i++) {
         let row = rows[i];
-        out(`${row.period.toString().padStart(6, ' ')}  ${row.date}  ${row.bal.toFixed(2).padStart(10, ' ')}  ${row.principal.toFixed(2).padStart(10, ' ')}  ${row.interest.toFixed(2).padStart(10, ' ')}  ${row.payment.toFixed(2).padStart(10, ' ')}  ${(100*row.apr).toFixed(2).padStart(6, ' ')}`);
+        out(`${row.period.toString().padStart(6, ' ')}  ${row.date}  ${row.bal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.principal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.interest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.payment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${(100*row.apr).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(6, ' ')}`);
     }
 }
 
@@ -59,9 +59,9 @@ function _calc(THIS) {
 
         let savings = themResults.totalInterest - usResults.totalInterest;
         THIS.savings = savings.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-        out(`Our   Total Interest:   ${usResults.totalInterest.toFixed(2).padStart(10, ' ')}      Term: ${usResults.term.toFixed(0).padStart(3, ' ')}      Max Payment: ${usResults.maxPmt.toFixed(2).padStart(10, ' ')}`);
-        out(`Their Total Interest:   ${themResults.totalInterest.toFixed(2).padStart(10, ' ')}      Term: ${themResults.term.toFixed(0).padStart(3, ' ')}      Max Payment: ${themResults.maxPmt.toFixed(2).padStart(10, ' ')}`);
-        out(`Total Interest Savings: ${savings.toFixed(2).padStart(10, ' ')}`);
+        out(`Our   Total Interest:   ${usResults.totalInterest.toLocaleString('en-US', { style: 'currency', currency: 'USD' }).padStart(12, ' ')}      Term: ${usResults.term.toFixed(0).padStart(3, ' ')}      Max Payment: ${usResults.maxPmt.toLocaleString('en-US', { style: 'currency', currency: 'USD' }).padStart(10, ' ')}`);
+        out(`Their Total Interest:   ${themResults.totalInterest.toLocaleString('en-US', { style: 'currency', currency: 'USD' }).padStart(12, ' ')}      Term: ${themResults.term.toFixed(0).padStart(3, ' ')}      Max Payment: ${themResults.maxPmt.toLocaleString('en-US', { style: 'currency', currency: 'USD' }).padStart(10, ' ')}`);
+        out(`Total Interest Savings: ${savings.toLocaleString('en-US', { style: 'currency', currency: 'USD' }).padStart(12, ' ')}`);
 
         report(usResults, `Our Schedule\n\nBand: ${band}`);
         report(themResults, 'Their Schedule');
@@ -112,7 +112,7 @@ createApp({
     },
     methods: {
         setTerm(term) {
-            this.pmt = calculatePayment(this.balance, this.apr/1200, term).toFixed(2);
+            this.pmt = calculatePayment(this.balance, this.apr / 1200, term).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
         calc() {
             _calc(this);

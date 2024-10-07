@@ -40,7 +40,7 @@ class PaydownUs {
         let maxPmt = 0;
 
         for (var i = 0; i < 1000; i++) {
-            if (i > 200) {
+            if (i > 200 || b > 30000) {
                 return {
                     'error': 'Scenario does not paydown. Perhaps payment is too low for the interest rate.',
                     'totalInterest': totalInterest,
@@ -143,12 +143,13 @@ class PaydownThem {
         let maxPmt = 0;
 
         for (var i = 0; i < 1000; i++) {
-            if (i > 200) {
+            if (i > 200 || b > 30000) {
                 return {
                     'error': 'Scenario does not paydown. Perhaps payment is too low for the interest rate.',
                     'totalInterest': 0,
                     'term': i + 1,
-                    'schedule': schedule
+                    'schedule': schedule,
+                    'maxPmt': maxPmt
                 }
             }
 
