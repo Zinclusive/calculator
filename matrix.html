@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
+
+    <script type="module">
+        import { matrix } from './engine.js';
+
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                const balances = [];
+                for (let i = 1000; i <= 9000; i += 1000) {
+                    balances.push({ amount: i });
+                }
+                const rates = [];
+                for (let i = 100; i <= 500; i += 50) {
+                    rates.push({ amount: i });
+                }
+                return {
+                    balances: balances,
+                    rates: rates
+                };
+            },
+            methods: {
+                matrix
+            }
+        }).mount('#app');
+        </script>
+    </head>
+
+<body>
+    <div id="app" class="container">
+        <h1>Savings Matrix</h1>
+        <p></p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Balance</th>
+                    <th v-for="rate in rates" :key="rate.amount">
+                        {{ rate.amount }}%
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="balance in balances" :key="balance.amount">
+                    <td>{{ balance.amount }}</td>
+                    <td v-for="rate in rates" :key="rate.amount">
+                        <a :href="'/calculator/?balance=' + (result = matrix(balance.amount, rate.amount, 24)).balance + '&pmt=' + result.pmt + '&apr=' + result.apr">
+                            {{ result.savings.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<pre id="out1"></pre>
+
+</html>

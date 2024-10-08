@@ -211,4 +211,22 @@ class PaydownThem {
     }
 }
 
-export { PaydownUs, PaydownThem, calculatePayment };
+function matrix(balance, apr, term) {
+    const pmt = calculatePayment(balance, apr / 1200, term);
+    const us = new PaydownUs(balance, 26, new Date());
+    const usResults = us.runSchedule();
+    const them = new PaydownThem(balance, apr, pmt, new Date());
+    const themResults = them.runSchedule();
+
+    return {
+        balance: balance,
+        apr: apr,
+        pmt: pmt,
+        term: term,
+        savings: themResults.totalInterest - usResults.totalInterest,
+        // us: usResults,
+        // them: themResults
+    };
+}
+
+export { PaydownUs, PaydownThem, calculatePayment, matrix };
