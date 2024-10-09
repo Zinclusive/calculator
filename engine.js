@@ -236,9 +236,12 @@ function matrix(balance, apr, term) {
     const ppy = 26
     let pmt = calculatePayment(balance, apr / 1200, term);
     pmt = +pmt.toFixed(2)
-    const us = new PaydownUs(balance, ppy, new Date());
+    const urlParams = new URLSearchParams(window.location.search);
+    const yyyy = new Date().getFullYear();
+    let start = new Date(urlParams.get('start') + yyyy + '-01-01T00:00:00')
+    const us = new PaydownUs(balance, ppy, start);
     const usResults = us.runSchedule();
-    const them = new PaydownThem(balance, apr, pmt, new Date());
+    const them = new PaydownThem(balance, apr, pmt, start);
     const themResults = them.runSchedule();
 
     return {
@@ -247,6 +250,7 @@ function matrix(balance, apr, term) {
         pmt: pmt,
         term: term,
         ppy: ppy,
+        start: start.toISOString().split('T')[0],
         savings: themResults.totalInterest - usResults.totalInterest,
         // us: usResults,
         // them: themResults
