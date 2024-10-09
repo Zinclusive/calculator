@@ -23,6 +23,11 @@
         <a href="/calculator/?balance=5000&ppy=24&start=2000-01-01&apr=200&pmt=850">$14K</a> |
         <a href="/calculator/?balance=10000&ppy=24&start=3000-01-01&pmt=8333.34&apr=1000" title="Worst-case.">$177K</a>
         <p class="savings">Total savings: {{ savings }}</p>
+        <p>This simulator assumes that your payment schedule aligns with the origination date which always starts on the first of the month;
+            and that the periods in the payment schedule are equal in duration and defined to be (days-in-year / periods-in-year)
+            where days-in-year can be 365 or 366 for leap years, and periods-in-year can be 12, 24, 26, or 52.
+            For example, if you are making semi-monthly payments, all payment periods will be 15 days long
+            as opposed to payments on the first and fifteenth of each month.</p>
         <form>
             <div class="form-group">
             <label for="balance">Balance</label>
