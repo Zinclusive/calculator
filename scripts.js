@@ -29,7 +29,7 @@ function report(results, title) {
     out("======  ==========  ==========  ==========  ==========  ==========  ======");
     for (let i = 0; i < rows.length; i++) {
         let row = rows[i];
-        out(`${row.period.toString().padStart(6, ' ')}  ${row.date}  ${row.bal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.principal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.interest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.payment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${(100*row.apr).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(6, ' ')}`);
+        out(`${row.period.toString().padStart(6, ' ')}  ${row.date}  ${row.bal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.principal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.interest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${row.payment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(10, ' ')}  ${(100*row.apr).toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).padStart(6, ' ')}`);
     }
 }
 
@@ -83,7 +83,7 @@ let apr = urlParams.has('apr') ? parseFloat(urlParams.get('apr')) : 200;
 let ppy = urlParams.has('ppy') ? parseFloat(urlParams.get('ppy')) : 12;
 let term = urlParams.has('term') ? parseFloat(urlParams.get('term')) : 24;
 let pmt = urlParams.has('pmt') ? parseFloat(urlParams.get('pmt')) : 500;
-start = urlParams.has('start') ? new Date(urlParams.get('start')) : start;
+start = urlParams.has('start') ? new Date(urlParams.get('start') + 'T00:00:00') : start;
 
 const { createApp } = Vue;
 createApp({

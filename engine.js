@@ -32,7 +32,7 @@ class PaydownUs {
         console.log(`MinPmtFloor: ${MinPmtFloor}`);
         console.log(`MinPmtPctPrin: ${MinPmtPctPrin}`);
 
-        let apr = config.Apr / 100;
+        let apr = config.Apr / 100; // Percentage to decimal
         let d = new Date(orig_date);
         let ld = new Date(d);
         let b = balance;
@@ -45,20 +45,14 @@ class PaydownUs {
                     'error': 'Scenario does not paydown. Perhaps payment is too low for the interest rate.',
                     'totalInterest': totalInterest,
                     "term": i + 1,
-                    'schedule': schedule
+                    'schedule': schedule,
+                    'maxPmt': maxPmt
                 }
             }
 
             if (i >= config.AprDropsOn) {
                 apr = config.AprDropsTo / 100;
             }
-            const perdiem_rate = apr / 365;
-
-            const daysSinceOrigination = Math.floor((d - orig_date) / (1000 * 60 * 60 * 24));
-            const days = Math.floor((d - ld) / (1000 * 60 * 60 * 24));
-            ld = new Date(d);
-
-            const stDays = days;
 
             if (i === 0) {
                 schedule.push({
@@ -72,11 +66,26 @@ class PaydownUs {
                     apr: 0,
                 });
             } else {
-                const Int = Math.round(b * perdiem_rate * stDays * 100) / 100;
+                // Below accounts for leap years
+                const now = new Date()
+                const daysInYear = (new Date(now.getFullYear(), 11, 31) - new Date(now.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24);
+                const dailyRate = apr / daysInYear;
+
+                let sd = new Date(d);
+                sd.setDate(sd.getDate() - 10);
+
+                const daysSinceOrigination = Math.floor((d - orig_date) / (1000 * 60 * 60 * 24));
+                const days = Math.floor((sd - ld) / (1000 * 60 * 60 * 24));
+                ld = new Date(sd);
+
+                const stDays = days;
+
+                const Int = +(b * dailyRate * stDays).toFixed(2)
                 totalInterest += Int;
                 const MinPmtPrin = b * (MinPmtPctPrin / 100) * 12 / periods_per_year;
                 const bi = b + Int;
-                const pmt = Math.min(bi, Math.max(MinPmtPrin + Int, MinPmtFloor));
+                let pmt = Math.min(bi, Math.max(MinPmtPrin + Int, MinPmtFloor * 12 / periods_per_year));
+                pmt = +pmt.toFixed(2)
                 maxPmt = Math.max(maxPmt, pmt);
 
                 b = bi - pmt;
@@ -101,7 +110,7 @@ class PaydownUs {
             } else {
                 d.setDate(d.getDate() + Math.floor(Math.round(365 / this.periodsPerYear)));
             }
-            if (b <= 0) {
+            if (b <= 0.01) {
                 break;
             }
         }
@@ -171,9 +180,21 @@ class PaydownThem {
                     apr: 0,
                 });
             } else {
-                const interestPayment = b * (this.apr / 12 / 100);
+                const now = new Date()
+                const daysInYear = (new Date(now.getFullYear(), 11, 31) - new Date(now.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24);
+                const dailyRate = apr / daysInYear;
+
+                // Don
+                let interestPayment = b * (dailyRate * stDays);
+                interestPayment = +interestPayment.toFixed(2)
+
+                // Rob
+                //const interestPayment = b * (this.apr / 12 / 100);
+
                 const principalPayment = Math.min(b, pmt - interestPayment);
+
                 pmt = principalPayment + interestPayment;
+                pmt = +pmt.toFixed(2)
                 maxPmt = Math.max(maxPmt, pmt);
 
                 b -= principalPayment;
@@ -195,7 +216,7 @@ class PaydownThem {
             } else {
                 d.setDate(d.getDate() + Math.floor(Math.round(365 / periods_per_year)));
             }
-            if (b <= 0) {
+            if (b <= 0.01) {
                 break;
             }
         }
@@ -212,8 +233,10 @@ class PaydownThem {
 }
 
 function matrix(balance, apr, term) {
-    const pmt = calculatePayment(balance, apr / 1200, term);
-    const us = new PaydownUs(balance, 26, new Date());
+    const ppy = 26
+    let pmt = calculatePayment(balance, apr / 1200, term);
+    pmt = +pmt.toFixed(2)
+    const us = new PaydownUs(balance, ppy, new Date());
     const usResults = us.runSchedule();
     const them = new PaydownThem(balance, apr, pmt, new Date());
     const themResults = them.runSchedule();
@@ -223,6 +246,7 @@ function matrix(balance, apr, term) {
         apr: apr,
         pmt: pmt,
         term: term,
+        ppy: ppy,
         savings: themResults.totalInterest - usResults.totalInterest,
         // us: usResults,
         // them: themResults
