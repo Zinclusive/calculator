@@ -1,8 +1,8 @@
 const config = {
     "PeriodsPerYear": 12,
     "OrigFee": 75.00,
-    "Apr": 59.95,
-    "AprDropsTo": 35.950,
+    "Apr": 59.975,
+    "AprDropsTo": 35.975,
     "AprDropsOn": 13,
     "MinInitBal": 1000,
 
